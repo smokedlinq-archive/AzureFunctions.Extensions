@@ -16,14 +16,12 @@ namespace Azure.Functions.Extensions.Http
     {
         private readonly ModelMetadata _metadata;
         private readonly IModelBinder _binder;
-        private readonly BindingSource _source;
         private readonly IList<ValueProviderFactory> _valueProviderFactories;
 
-        public MvcModelBinding(ModelMetadata metadata, IModelBinder binder, BindingSource source, IList<ValueProviderFactory> valueProviderFactories)
+        public MvcModelBinding(ModelMetadata metadata, IModelBinder binder, IList<ValueProviderFactory> valueProviderFactories)
         {
             _metadata = metadata ?? throw new ArgumentNullException(nameof(metadata));
             _binder = binder ?? throw new ArgumentNullException(nameof(binder));
-            _source = source ?? throw new ArgumentNullException(nameof(source));
             _valueProviderFactories = valueProviderFactories ?? throw new ArgumentNullException(nameof(valueProviderFactories));
         }
 

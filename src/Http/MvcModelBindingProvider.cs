@@ -48,7 +48,7 @@ namespace Azure.Functions.Extensions.Http
 
                 var modelBinder = _modelBinderFactory.CreateBinder(modelBinderFactoryContext);
 
-                return Task.FromResult<IBinding?>(new MvcModelBinding(modelMetadata, modelBinder, attribute.BindingSource, _mvcOptions.ValueProviderFactories));
+                return Task.FromResult<IBinding?>(new MvcModelBinding(modelMetadata, modelBinder, _mvcOptions.ValueProviderFactories));
             }
 
             return Task.FromResult<IBinding?>(null);
