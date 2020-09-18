@@ -23,9 +23,9 @@ jobs:
       run: |
         dotnet build --configuration Release
         dotnet pack --configuration Release -p:Version=$($env:GITHUB_REF -replace '^refs/tags/v','') --output ./publish
-        dotnet nuget push ./publish/*.nupkg -k ${{ secrets.NUGET_KEY }} -s https://api.nuget.org/v3/index.json --skip-duplicate
+        dotnet nuget push "./publish/*.nupkg" -k ${{ secrets.NUGET_KEY }} -s https://api.nuget.org/v3/index.json --skip-duplicate
         dotnet nuget add source https://nuget.pkg.github.com/smokedlinq/index.json -n github -u smokedlinq -p ${{ secrets.GITHUB_TOKEN }}
-        dotnet nuget push ./publish/*.nupkg -s github --skip-duplicate --no-symbols true
+        dotnet nuget push "./publish/*.nupkg" -s github --skip-duplicate --no-symbols true
 
     - name: Create release
       uses: actions/create-release@master
