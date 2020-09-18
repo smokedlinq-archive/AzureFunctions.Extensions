@@ -2,8 +2,8 @@
 
 ![Build](https://github.com/smokedlinq/Azure.Functions.Extensions/workflows/Build/badge.svg)
 [![SonarCloud Status](https://sonarcloud.io/api/project_badges/measure?project=smokedlinq_Azure.Functions.Extensions&metric=alert_status)](https://sonarcloud.io/dashboard?id=smokedlinq_Azure.Functions.Extensions)
-[![NuGet](https://img.shields.io/nuget/dt/Azure.Functions.Extensions.Http.svg)](https://www.nuget.org/packages/Azure.Functions.Extensions.Http)
-[![NuGet](https://img.shields.io/nuget/vpre/Azure.Functions.Extensions.Http.svg)](https://www.nuget.org/packages/Azure.Functions.Extensions.Http)
+[![NuGet](https://img.shields.io/nuget/dt/Azure.Functions.Extensions.Http.svg)](https://www.nuget.org/packages/AzureFunctions.Extensions.Http)
+[![NuGet](https://img.shields.io/nuget/vpre/Azure.Functions.Extensions.Http.svg)](https://www.nuget.org/packages/AzureFunctions.Extensions.Http)
 
 This package adds binding extensions to HTTP requests.
 
