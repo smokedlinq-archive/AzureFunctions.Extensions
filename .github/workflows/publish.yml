@@ -22,10 +22,10 @@ jobs:
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-      shell: powershell
+      shell: pwsh
       run: |
         dotnet build --configuration Release
-        dotnet pack --configuration Release -p:Version=${GITHUB_REF##*/v}
+        dotnet pack --configuration Release -p:Version=$($env:GITHUB_REF -replace '^refs/tags/v','')
         dotnet nuget push Azure.Functions.Extensions.*.nupkg -k ${{ secrets.NUGET_KEY }} -s https://api.nuget.org/v3/index.json
 
     - name: Create release
