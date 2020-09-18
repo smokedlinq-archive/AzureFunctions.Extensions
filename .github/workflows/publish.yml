@@ -18,17 +18,14 @@ jobs:
       with:
         dotnet-version: 3.1.x
 
-    - name: Build and analyze
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+    - name: Build and publish
       shell: pwsh
       run: |
         dotnet build --configuration Release
         dotnet pack --configuration Release -p:Version=$($env:GITHUB_REF -replace '^refs/tags/v','')
         New-Item -Path ./publish -ItemType Directory
         Get-ChildItem -Path ./src -Filter Azure.Functions.Extensions.*.snupkg -Recurse | Copy-Item -Destination ./publish/
-        dotnet nuget push ./publish/Azure.Functions.Extensions.*.nupkg -k ${{ secrets.NUGET_KEY }} -s https://api.nuget.org/v3/index.json --skip-duplicate
+        dotnet nuget push ./publish/Azure.Functions.Extensions.*.snupkg -k ${{ secrets.NUGET_KEY }} -s https://api.nuget.org/v3/index.json --skip-duplicate
 
     - name: Create release
       uses: actions/create-release@master
