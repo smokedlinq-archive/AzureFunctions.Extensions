@@ -23,9 +23,10 @@ jobs:
       run: |
         dotnet build --configuration Release
         dotnet pack --configuration Release -p:Version=$($env:GITHUB_REF -replace '^refs/tags/v','')
-        New-Item -Path ./publish -ItemType Directory
-        Get-ChildItem -Path ./src -Filter Azure.Functions.Extensions.* -Include *.nupkg,*.snupkg -Recurse | Copy-Item -Destination ./publish/
-        dotnet nuget push ./publish/Azure.Functions.Extensions.*.nupkg -k ${{ secrets.NUGET_KEY }} -s https://api.nuget.org/v3/index.json --skip-duplicate
+        Get-ChildItem -Path ./src -Filter Azure.Functions.Extensions.* -Include *.nupkg -Recurse | ForEach-Object {
+          Write-Host "Publishing $($_.FullName)"
+          dotnet nuget push $_.FullName -k ${{ secrets.NUGET_KEY }} -s https://api.nuget.org/v3/index.json --skip-duplicate
+        }
 
     - name: Create release
       uses: actions/create-release@master
