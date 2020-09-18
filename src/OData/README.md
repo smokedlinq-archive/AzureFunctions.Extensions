@@ -2,8 +2,8 @@
 
 ![Build](https://github.com/smokedlinq/Azure.Functions.Extensions/workflows/Build/badge.svg)
 [![SonarCloud Status](https://sonarcloud.io/api/project_badges/measure?project=smokedlinq_Azure.Functions.Extensions&metric=alert_status)](https://sonarcloud.io/dashboard?id=smokedlinq_Azure.Functions.Extensions)
-[![NuGet](https://img.shields.io/nuget/dt/Azure.Functions.Extensions.OData.svg)](https://www.nuget.org/packages/AzureFunctions.Extensions.OData)
-[![NuGet](https://img.shields.io/nuget/vpre/Azure.Functions.Extensions.OData.svg)](https://www.nuget.org/packages/AzureFunctions.Extensions.OData)
+[![NuGet](https://img.shields.io/nuget/dt/AzureFunctions.Extensions.OData.svg)](https://www.nuget.org/packages/AzureFunctions.Extensions.OData)
+[![NuGet](https://img.shields.io/nuget/vpre/AzureFunctions.Extensions.OData.svg)](https://www.nuget.org/packages/AzureFunctions.Extensions.OData)
 
 This package adds binding extensions to handle OData queries on HTTP requests.
 
