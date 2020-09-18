@@ -1,0 +1,19 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <PackageId>Azure.Functions.Extensions.OData</PackageId>
+    <Description>This package adds binding extensions to handle OData queries on HTTP requests.</Description>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <FrameworkReference Include="Microsoft.AspNetCore.App" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.OData" Version="7.4.1" />
+    <PackageReference Include="Microsoft.Azure.WebJobs" Version="3.0.18" />
+    <PackageReference Include="Microsoft.Azure.WebJobs.Extensions.Http" Version="3.0.2" />
+  </ItemGroup>
+
+</Project>
