@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
-    <PackageId>Azure.Functions.Extensions.OData</PackageId>
+    <PackageId>AzureFunctions.Extensions.OData</PackageId>
     <Description>This package adds binding extensions to handle OData queries on HTTP requests.</Description>
   </PropertyGroup>
 
