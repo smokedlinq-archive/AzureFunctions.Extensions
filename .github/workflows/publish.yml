@@ -26,6 +26,7 @@ jobs:
         Get-ChildItem -Path ./src -Filter AzureFunctions.Extensions.* -Include *.nupkg -Recurse | ForEach-Object {
           Write-Host "Publishing $($_.FullName)"
           dotnet nuget push $_.FullName -k ${{ secrets.NUGET_KEY }} -s https://api.nuget.org/v3/index.json --skip-duplicate
+          dotnet nuget push $_.FullName -k ${{ secrets.GITHUB_TOKEN }} -s https://nuget.pkg.github.com/smokedlinq/index.json --skip-duplicate
         }
 
     - name: Create release
