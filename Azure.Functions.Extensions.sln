@@ -7,6 +7,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Azure.Functions.Extensions.
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Azure.Functions.Extensions.OData", "src\OData\Azure.Functions.Extensions.OData.csproj", "{9AD786E6-D628-4A00-8146-39DC7F6E991C}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Azure.Functions.Extensions.Http.Tests", "tests\Http\Azure.Functions.Extensions.Http.Tests.csproj", "{4E4032F3-7D69-4D4C-8322-0AADC84C812E}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -41,6 +43,18 @@ Global
 		{9AD786E6-D628-4A00-8146-39DC7F6E991C}.Release|x64.Build.0 = Release|Any CPU
 		{9AD786E6-D628-4A00-8146-39DC7F6E991C}.Release|x86.ActiveCfg = Release|Any CPU
 		{9AD786E6-D628-4A00-8146-39DC7F6E991C}.Release|x86.Build.0 = Release|Any CPU
+		{4E4032F3-7D69-4D4C-8322-0AADC84C812E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4E4032F3-7D69-4D4C-8322-0AADC84C812E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4E4032F3-7D69-4D4C-8322-0AADC84C812E}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{4E4032F3-7D69-4D4C-8322-0AADC84C812E}.Debug|x64.Build.0 = Debug|Any CPU
+		{4E4032F3-7D69-4D4C-8322-0AADC84C812E}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{4E4032F3-7D69-4D4C-8322-0AADC84C812E}.Debug|x86.Build.0 = Debug|Any CPU
+		{4E4032F3-7D69-4D4C-8322-0AADC84C812E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4E4032F3-7D69-4D4C-8322-0AADC84C812E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4E4032F3-7D69-4D4C-8322-0AADC84C812E}.Release|x64.ActiveCfg = Release|Any CPU
+		{4E4032F3-7D69-4D4C-8322-0AADC84C812E}.Release|x64.Build.0 = Release|Any CPU
+		{4E4032F3-7D69-4D4C-8322-0AADC84C812E}.Release|x86.ActiveCfg = Release|Any CPU
+		{4E4032F3-7D69-4D4C-8322-0AADC84C812E}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

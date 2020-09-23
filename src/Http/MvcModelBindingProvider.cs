@@ -32,36 +32,24 @@ namespace Azure.Functions.Extensions.Http
 
             if (!(attribute is null))
             {
-                var modelMetadata = GetModelMetadata(context.Parameter);
+                var modelMetadata = _modelMetadataProvider switch
+                {
+                    ModelMetadataProvider provider => provider.GetMetadataForParameter(context.Parameter),
+                    _ => _modelMetadataProvider.GetMetadataForType(context.Parameter.ParameterType)
+                };
 
                 var modelBinderFactoryContext = new ModelBinderFactoryContext
                 {
                     Metadata = modelMetadata,
-                    BindingInfo = new BindingInfo
-                    {
-                        BinderModelName = modelMetadata.BinderModelName,
-                        BinderType = modelMetadata.BinderType,
-                        BindingSource = attribute.BindingSource,
-                        PropertyFilterProvider = modelMetadata.PropertyFilterProvider
-                    }
+                    BindingInfo = BindingInfo.GetBindingInfo(context.Parameter.GetCustomAttributes())
                 };
 
                 var modelBinder = _modelBinderFactory.CreateBinder(modelBinderFactoryContext);
 
-                return Task.FromResult<IBinding?>(new MvcModelBinding(modelMetadata, modelBinder, _mvcOptions.ValueProviderFactories));
+                return Task.FromResult<IBinding?>(new MvcModelBinding(context.Parameter, modelMetadata, modelBinder, _mvcOptions.ValueProviderFactories));
             }
 
             return Task.FromResult<IBinding?>(null);
-        }
-
-        private ModelMetadata GetModelMetadata(ParameterInfo parameter)
-        {
-            if (_modelMetadataProvider is ModelMetadataProvider provider)
-            {
-                return provider.GetMetadataForParameter(parameter);
-            }
-
-            return _modelMetadataProvider.GetMetadataForType(parameter.ParameterType);
         }
     }
 }

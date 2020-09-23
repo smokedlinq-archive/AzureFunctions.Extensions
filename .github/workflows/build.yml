@@ -37,7 +37,7 @@ jobs:
 
     - name: Install SonarCloud scanner
       if: steps.cache-sonar-scanner.outputs.cache-hit != 'true'
-      shell: powershell
+      shell: pwsh
       run: |
         New-Item -Path .\.sonar\scanner -ItemType Directory
         dotnet tool update dotnet-sonarscanner --tool-path .\.sonar\scanner
@@ -46,8 +46,15 @@ jobs:
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-      shell: powershell
+      shell: pwsh
       run: |
-        .\.sonar\scanner\dotnet-sonarscanner begin /k:"smokedlinq_Azure.Functions.Extensions" /o:"smokedlinq-github" /d:sonar.login="${{ secrets.SONAR_TOKEN }}" /d:sonar.host.url="https://sonarcloud.io"
+        .\.sonar\scanner\dotnet-sonarscanner begin /k:'smokedlinq_Azure.Functions.Extensions' /o:'smokedlinq-github' /d:sonar.login='${{ secrets.SONAR_TOKEN }}' /d:sonar.host.url='https://sonarcloud.io'
         dotnet build --configuration Release
-        .\.sonar\scanner\dotnet-sonarscanner end /d:sonar.login="${{ secrets.SONAR_TOKEN }}"
+        dotnet test --configuration Release --no-build --logger 'console;verbosity=detailed' --% /p:CollectCoverage=true /p:CoverletOutputFormat=\"opencover,lcov\"
+        .\.sonar\scanner\dotnet-sonarscanner end /d:sonar.login='${{ secrets.SONAR_TOKEN }}'
+
+        - name: Publish coverage report to coveralls.io
+      uses: coverallsapp/github-action@master
+      with:
+        github-token: ${{ secrets.GITHUB_TOKEN }}
+        path-to-lcov: ./coverage.info 

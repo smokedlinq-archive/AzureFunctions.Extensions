@@ -1,11 +1,11 @@
 <Project>
   <ItemGroup>
     <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.*" PrivateAssets="All" />
-    <PackageReference Include="SonarAnalyzer.CSharp" Version="8.*">
+    <PackageReference Include="SonarAnalyzer.CSharp" Version="[8.13.1.21947,)">
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
-    <PackageReference Include="Microsoft.CodeAnalysis.FxCopAnalyzers" Version="3.*">
+    <PackageReference Include="Microsoft.CodeAnalysis.FxCopAnalyzers" Version="[3.3.0,)">
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>

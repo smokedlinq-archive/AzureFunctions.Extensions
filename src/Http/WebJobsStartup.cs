@@ -1,6 +1,7 @@
 ﻿using Azure.Functions.Extensions.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Infrastructure;
+using Microsoft.AspNetCore.Mvc.Internal;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.AspNetCore.Mvc.ModelBinding.Binders;
 using Microsoft.Azure.WebJobs;
@@ -8,10 +9,12 @@ using Microsoft.Azure.WebJobs.Host.Bindings;
 using Microsoft.Azure.WebJobs.Hosting;
 using Microsoft.Extensions.DependencyInjection;
 using System;
+using System.Runtime.CompilerServices;
 
 #pragma warning disable CA1812
 
 [assembly: WebJobsStartup(typeof(WebJobsStartup))]
+[assembly: InternalsVisibleTo("Azure.Functions.Extensions.Http.Tests")]
 
 namespace Azure.Functions.Extensions.Http
 {
@@ -45,6 +48,8 @@ namespace Azure.Functions.Extensions.Http
                     options.ValueProviderFactories.Add(new RouteValueProviderFactory());
                     options.ValueProviderFactories.Add(new QueryStringValueProviderFactory());
                     options.ValueProviderFactories.Add(new JQueryFormValueProviderFactory());
+
+                    options.ModelValidatorProviders.Add(new DefaultModelValidatorProvider());
                 });
 
             builder.Services.AddSingleton<IBindingProvider, MvcModelBindingProvider>();
