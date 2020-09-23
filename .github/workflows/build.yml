@@ -52,9 +52,3 @@ jobs:
         dotnet build --configuration Release
         dotnet test --configuration Release --no-build --logger 'console;verbosity=detailed' --% /p:CollectCoverage=true /p:CoverletOutputFormat=\"opencover,lcov\"
         .\.sonar\scanner\dotnet-sonarscanner end /d:sonar.login='${{ secrets.SONAR_TOKEN }}'
-
-        - name: Publish coverage report to coveralls.io
-      uses: coverallsapp/github-action@master
-      with:
-        github-token: ${{ secrets.GITHUB_TOKEN }}
-        path-to-lcov: ./coverage.info 
