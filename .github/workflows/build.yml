@@ -50,5 +50,5 @@ jobs:
       run: |
         .\.sonar\scanner\dotnet-sonarscanner begin /k:'smokedlinq_Azure.Functions.Extensions' /o:'smokedlinq-github' /d:sonar.login='${{ secrets.SONAR_TOKEN }}' /d:sonar.host.url='https://sonarcloud.io'
         dotnet build --configuration Release
-        dotnet test --configuration Release --no-build --logger 'console;verbosity=detailed' --% /p:CollectCoverage=true /p:CoverletOutputFormat=\"opencover,lcov\"
+        dotnet test --configuration Release --no-build --logger 'trx;LogFileName=TestResults.trx' --logger 'console;verbosity=detailed' --collect:'XPlat Code Coverage' -- DataCollectionRunSettings.DataCollectors.DataCollector.Configuration.Format='json,cobertura,lcov,opencover' DataCollectionRunSettings.DataCollectors.DataCollector.Configuration.IncludeTestAssembly=false
         .\.sonar\scanner\dotnet-sonarscanner end /d:sonar.login='${{ secrets.SONAR_TOKEN }}'
