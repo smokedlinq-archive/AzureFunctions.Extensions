@@ -10,7 +10,11 @@
     <VersionSuffix Condition=" '$(VersionSuffix)'=='' ">dev</VersionSuffix>
   </PropertyGroup>
 
-  <PropertyGroup Condition="'$(Version)' != ''">
+  <PropertyGroup Condition="$(MSBuildProjectName.EndsWith('.Tests')) OR $(MSBuildProjectDirectory.Contains('\test\'))">
+    <IsTestProject>true</IsTestProject>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Version)' != '' AND '$(IsTestProject)' != 'true'">
     <IsPackable>true</IsPackable>
     <DebugType>Portable</DebugType>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>

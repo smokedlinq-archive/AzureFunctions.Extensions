@@ -31,7 +31,7 @@ namespace Azure.Functions.Extensions.Http.Tests
             .Arrange(setup =>
             {
                 ParameterInfo GetParameterWithAttribute(string methodName, Type attributeType)
-                    => GetType().GetMethod(methodName, BindingFlags.NonPublic | BindingFlags.Static).GetParameters().First(x => !(x.GetCustomAttribute(attributeType) is null));
+                    => GetType().GetMethod(methodName, BindingFlags.NonPublic | BindingFlags.Static)!.GetParameters().First(x => !(x.GetCustomAttribute(attributeType) is null));
 
                 setup.Mock<HttpContext>(httpContext =>
                 {

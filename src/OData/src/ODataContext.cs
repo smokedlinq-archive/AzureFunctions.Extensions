@@ -15,22 +15,6 @@ namespace Azure.Functions.Extensions.OData
     {
         private readonly Lazy<IEdmModel> _model;
 
-        ~ODataContext() => Dispose(false);
-
-        public void Dispose()
-        {
-            Dispose(true);
-            GC.SuppressFinalize(this);
-        }
-
-        private void Dispose(bool disposing)
-        {
-            if (disposing)
-            {
-                Services.Dispose();
-            }
-        }
-
         public ODataContext(Func<IEnumerable<ConfigureODataConventionModelBuilder>> conventions)
         {
             var services = new ServiceCollection();
@@ -73,8 +57,25 @@ namespace Azure.Functions.Extensions.OData
             });
         }
 
+        ~ODataContext()
+            => Dispose(false);
+
         public ServiceProvider Services { get; private set; }
 
         public IEdmModel Model => _model.Value;
+
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        private void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                Services.Dispose();
+            }
+        }
     }
 }
