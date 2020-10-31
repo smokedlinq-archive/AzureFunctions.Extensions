@@ -1,3 +1,5 @@
+using A3;
+using AutoFixture;
 using FluentAssertions;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
@@ -19,43 +21,43 @@ namespace Azure.Functions.Extensions.Http.Tests
     public class MvcModelBindingProviderTests
     {
         [Theory]
-        [InlineAutoMoq(typeof(FromQueryAttribute))]
-        [InlineAutoMoq(typeof(FromHeaderAttribute))]
-        [InlineAutoMoq(typeof(FromFormAttribute))]
-        [InlineAutoMoq(typeof(FromBodyAttribute))]
-        [InlineAutoMoq(typeof(FromServicesAttribute))]
-        public async Task FunctionWithMvcModelBindingAttributeParameterShouldBeSupported(
-            Type parameterAttributeType,
-            Dictionary<string, Type> bindingDataContract,
-            Mock<IModelBinderFactory> modelBinderFactory,
-            Mock<IModelMetadataProvider> modelMetadataProvider,
-            MvcOptions mvcOptions)
-        {
-            // Arrange
-            var parameter = GetParameterWithAttribute(nameof(Function), parameterAttributeType);
-            var context = new BindingProviderContext(parameter, bindingDataContract, CancellationToken.None);
+        [InlineData(typeof(FromQueryAttribute))]
+        [InlineData(typeof(FromHeaderAttribute))]
+        [InlineData(typeof(FromFormAttribute))]
+        [InlineData(typeof(FromBodyAttribute))]
+        [InlineData(typeof(FromServicesAttribute))]
+        public Task FunctionWithMvcModelBindingAttributeParameterShouldBeSupported(Type parameterAttributeType)
+            => A3<MvcModelBindingProvider>
+            .Arrange(setup =>
+            {
+                ParameterInfo GetParameterWithAttribute(string methodName, Type attributeType)
+                    => GetType().GetMethod(methodName, BindingFlags.NonPublic | BindingFlags.Static).GetParameters().First(x => !(x.GetCustomAttribute(attributeType) is null));
 
-            modelMetadataProvider.Setup(x => x.GetMetadataForType(It.IsAny<Type>()))
-                .Returns(() =>
-                {
-                    var identity = ModelMetadataIdentity.ForParameter(parameter);
-                    var details = new DefaultMetadataDetails(identity, ModelAttributes.GetAttributesForParameter(parameter));
-                    return new DefaultModelMetadata(modelMetadataProvider.Object, Mock.Of<ICompositeMetadataDetailsProvider>(), details);
-                });
+                var parameter = GetParameterWithAttribute(nameof(Function), parameterAttributeType);
+                var bindingDataContract = setup.Fixture.Create<Dictionary<string, Type>>();
 
-            modelBinderFactory.Setup(x => x.CreateBinder(It.IsAny<ModelBinderFactoryContext>()))
-                .Returns(Mock.Of<IModelBinder>());
+                setup.Mock<IModelMetadataProvider>(modelMetadataProvider => modelMetadataProvider
+                    .Setup(x => x.GetMetadataForType(It.IsAny<Type>()))
+                    .Returns(() =>
+                    {
+                        var identity = ModelMetadataIdentity.ForParameter(parameter);
+                        var details = new DefaultMetadataDetails(identity, ModelAttributes.GetAttributesForParameter(parameter));
+                        return new DefaultModelMetadata(modelMetadataProvider.Object, Mock.Of<ICompositeMetadataDetailsProvider>(), details);
+                    }));
 
-            // Act
-            var sut = new MvcModelBindingProvider(modelBinderFactory.Object, modelMetadataProvider.Object, Options.Create(mvcOptions));
-            var result = await sut.TryCreateAsync(context).ConfigureAwait(false);
+                setup.Mock<IModelBinderFactory>(modelBinderFactory => modelBinderFactory
+                    .Setup(x => x.CreateBinder(It.IsAny<ModelBinderFactoryContext>()))
+                    .Returns(Mock.Of<IModelBinder>()));
 
-            // Assert
-            result.Should().NotBeNull();
-        }
+                var mvcOptions = setup.Fixture.Create<MvcOptions>();
+                var modelBinderFactory = setup.Mock<IModelBinderFactory>().Object;
+                var modelMetadataProvider = setup.Mock<IModelMetadataProvider>().Object;
 
-        private ParameterInfo GetParameterWithAttribute(string methodName, Type attributeType)
-            => GetType().GetMethod(methodName, BindingFlags.NonPublic | BindingFlags.Static).GetParameters().First(x => !(x.GetCustomAttribute(attributeType) is null));
+                setup.Sut(new MvcModelBindingProvider(modelBinderFactory, modelMetadataProvider, Options.Create(mvcOptions)));
+                setup.Parameter(new BindingProviderContext(parameter, bindingDataContract, CancellationToken.None));
+            })
+            .Act(async (MvcModelBindingProvider sut, BindingProviderContext context) => await sut.TryCreateAsync(context))
+            .Assert(result => result.Should().NotBeNull());
 
         private static void Function(
             [FromQuery] string fromQuery,

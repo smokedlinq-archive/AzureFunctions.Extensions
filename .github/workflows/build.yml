@@ -20,6 +20,12 @@ jobs:
       with:
         dotnet-version: 3.1.x
 
+    - name: Setup JRE
+      uses: actions/setup-java@v1
+      with:
+        java-version: 15
+        java-package: jre
+
     - name: Cache SonarCloud packages
       uses: actions/cache@v1
       with:
@@ -48,7 +54,7 @@ jobs:
         SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
       shell: pwsh
       run: |
-        .\.sonar\scanner\dotnet-sonarscanner begin /k:'smokedlinq_Azure.Functions.Extensions' /o:'smokedlinq-github' /d:sonar.login='${{ secrets.SONAR_TOKEN }}' /d:sonar.host.url='https://sonarcloud.io'
-        dotnet build --configuration Release
-        dotnet test --configuration Release --no-build --logger 'trx;LogFileName=TestResults.trx' --logger 'console;verbosity=detailed' --collect:'XPlat Code Coverage' -- DataCollectionRunSettings.DataCollectors.DataCollector.Configuration.Format='json,cobertura,lcov,opencover' DataCollectionRunSettings.DataCollectors.DataCollector.Configuration.IncludeTestAssembly=false
+        dotnet test --configuration Release --logger 'console;verbosity=detailed' /p:CollectCoverage=true /p:CoverletOutputFormat=opencover
+        .\.sonar\scanner\dotnet-sonarscanner begin /k:'smokedlinq_AzureFunctions.Extensions' /o:'smokedlinq-github' /d:sonar.login='${{ secrets.SONAR_TOKEN }}' /d:sonar.host.url='https://sonarcloud.io' /d:sonar.cs.opencover.reportsPaths='**/coverage.opencover.xml'
+        dotnet build --configuration Release --no-incremental
         .\.sonar\scanner\dotnet-sonarscanner end /d:sonar.login='${{ secrets.SONAR_TOKEN }}'
