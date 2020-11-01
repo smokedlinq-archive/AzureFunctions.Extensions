@@ -48,6 +48,11 @@ jobs:
         New-Item -Path .\.sonar\scanner -ItemType Directory
         dotnet tool update dotnet-sonarscanner --tool-path .\.sonar\scanner
         
+    - name: Initialize CodeQL
+      uses: github/codeql-action/init@v1
+      with:
+        languages: csharp
+        
     - name: Build and analyze
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -58,3 +63,6 @@ jobs:
         .\.sonar\scanner\dotnet-sonarscanner begin /k:'smokedlinq_AzureFunctions.Extensions' /o:'smokedlinq-github' /d:sonar.login='${{ secrets.SONAR_TOKEN }}' /d:sonar.host.url='https://sonarcloud.io' /d:sonar.cs.opencover.reportsPaths='**/coverage.opencover.xml'
         dotnet build --configuration Release --no-incremental
         .\.sonar\scanner\dotnet-sonarscanner end /d:sonar.login='${{ secrets.SONAR_TOKEN }}'
+
+    - name: Perform CodeQL Analysis
+      uses: github/codeql-action/analyze@v1
