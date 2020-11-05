@@ -41,9 +41,8 @@ namespace Azure.Functions.Extensions.OData
         public Task<IValueProvider> BindAsync(BindingContext context)
         {
             _ = context ?? throw new ArgumentNullException(nameof(context));
-            var request = context.BindingData["$request"] as HttpRequest;
 
-            if (request is null)
+            if (!(context.BindingData["$request"] is HttpRequest request))
             {
                 throw new NotSupportedException("The OData binding can only be used with the HttpTrigger binding; add a parameter with the HttpTrigger binding attribute.");
             }
