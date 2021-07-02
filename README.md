@@ -24,7 +24,21 @@ The underlying OData support is provided by the [ASP.NET Core OData package](htt
 > __Note:__ [EF Core has several limitations](https://github.com/dotnet/efcore/issues?q=is%3Aissue+is%3Aopen+odata) with OData queries.
 
 ### Example usage
-
+#### Setup
+```csharp
+public class Startup : FunctionsStartup
+{
+    public override void Configure(IFunctionsHostBuilder builder)
+    {
+        builder.Services.AddOData(builder =>
+            {
+                builder.EntitySet<Department>("Departments");
+                builder.EntitySet<Product>("Products");
+            }); 
+    }
+}
+```  
+HttpTrigger Function
 ```csharp
 public class FnGetProductsHttp
 {
